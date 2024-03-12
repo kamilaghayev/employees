@@ -19,7 +19,8 @@ class App extends Component {
         super(props);
         this.state= {
             data: DATA,
-            searchInp: ''
+            searchInp: '',
+            filter: 'all',
         }
     }
 
@@ -87,25 +88,45 @@ class App extends Component {
     }
 
     //Search
-    onSearch = (value, items) => {
+    onSearch = (value, datas) => {
 
         if (!value || value.trim() === '') {
-            return items;
+            return datas;
         }
 
-        return items.filter(item => item.name.toLowerCase().includes(value))
+        return datas.filter(item => item.name.toLowerCase().includes(value))
     }
 
     onUptadeSearch = (input) => {
         this.setState({searchInp: input});
     }
 
+    //filter items
+    filterEmp = (filterType, datas) => {
+        
+        switch (filterType) {
+            case "rise":
+                return datas.filter(item => item.increase)
+            case "moreThan1000":
+                return datas.filter(item => item.salary > 1000);
+            default:
+                return datas;
+        }
+
+    }
+    onUptadeFilter = (filterType) => {
+        this.setState({
+            filter: filterType
+        })
+    }
+
     render() {
-        const {data, searchInp} = this.state;
+        const {data, searchInp, filter} = this.state;
+
         const allEmployees = data.length;
         const increased = data.filter(item => item.increase === true);
 
-        const visibleData = this.onSearch(searchInp, data);
+        const visibleData = this.filterEmp(filter, this.onSearch(searchInp, data));
 
         return (
             <div className="app">
@@ -116,7 +137,7 @@ class App extends Component {
     
                 <div className="search-panel">
                     <SearchPanel onUptadeSearch={this.onUptadeSearch}/>
-                    <AppFilter/>
+                    <AppFilter filter={filter} onUptadeFilter={this.onUptadeFilter}/>
                 </div>
     
                 <EmployeesList 

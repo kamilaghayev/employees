@@ -4,12 +4,14 @@ const EmployeesItem = (props) =>  {
     const {name, salary, increase, rise, onToggleProp, onDelete} = props;
 
     let className = "list-group-item d-flex justify-content-between";
+    
     if (increase) {
         className += " increase";
     }
     if (rise) {
         className += " like"
     }
+
     return (
         <li className={className}>
             <span 

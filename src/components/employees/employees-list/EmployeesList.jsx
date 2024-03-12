@@ -13,10 +13,16 @@ const EmployeesList = ({data, onDelete, onToggleProp}) => {
             />
         )
     });
-
+    const employeesEmpty = () => {
+        return (
+            <div className="w-100 text-center py-4 bg-light text-primary fs-3">
+                There are no employees
+            </div>
+        )
+    }
     return (
         <ul className="app-list list-group">
-            {allEmployees}
+            {data.length ? allEmployees: employeesEmpty()}
         </ul>
     )
 }
