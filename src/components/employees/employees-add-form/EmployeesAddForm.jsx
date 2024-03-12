@@ -10,10 +10,31 @@ class EmployeesAddForm extends Component {
         }
     }
 
+    resetState = () => {
+        this.setState({
+            name: '',
+            salary: 0
+        })
+    }
+
     onValueChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
         })
+    }
+
+    handleClick = (e) => {
+        e.preventDefault();
+        if (!this.state.salary || !this.state.name) return;
+        const {addEmployees} = this.props;
+
+        addEmployees({
+            id: Math.floor(Math.random() *1000),
+            increase: false,
+            rise: false,
+            ...this.state
+        });
+        this.resetState()
     }
 
     render() {
@@ -35,7 +56,8 @@ class EmployeesAddForm extends Component {
                         onChange={this.onValueChange}/>
     
                     <button type="submit"
-                            className="btn btn-outline-light">Submit</button>
+                            className="btn btn-outline-light"
+                        onClick={this.handleClick}>Submit</button>
                 </form>
             </div>
         )
